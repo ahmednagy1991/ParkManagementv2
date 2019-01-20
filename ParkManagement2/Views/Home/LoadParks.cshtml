@@ -1,0 +1,22 @@
+﻿@foreach (var park in Model.parks)
+{
+    <tr>
+        <td>@park.CarId</td>
+        <td>@park.Tag</td>
+        <td>@park.TimeOut</td>
+        <td>@park.HotelOutTime</td>
+        <td>
+            @if (park.CarStatus == (int)ParkManagement.Enums.ISTEnums.CarStatus.Park)
+            {
+                <button class="btn btn-sm btn-danger" onclick="AtDoor(@park.Id)">Out</button>
+            }
+            else if (park.CarStatus == (int)ParkManagement.Enums.ISTEnums.CarStatus.AtDoor)
+            {
+                <button class="btn btn-sm btn-warning" onclick="Out(@park.Id)">Out</button>
+            }
+
+        </td>
+        <td>@(new Business().GetFees(park.TimeIn ?? DateTime.Now, DateTime.Now, park.HotelOutTime ?? DateTime.Now, int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), park.Checked ?? false)) KWD</td>
+
+    </tr>
+}

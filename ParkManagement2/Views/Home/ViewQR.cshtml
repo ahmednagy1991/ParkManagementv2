@@ -1,0 +1,13 @@
+﻿@model string
+@using ParkManagement.Helpers
+
+<div class="row">
+    <div class="col-lg-12 col-lg-offset-3 text-center">
+        @Html.GenerateQrCode(Model)
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-lg-offset-3 text-center">
+        @Html.Label(Model)
+    </div>
+</div>

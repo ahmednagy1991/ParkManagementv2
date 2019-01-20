@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "ViewDailyReport";
+}
+
+<h2>Report</h2>
+
+<div class="container">
+    <div class="row">
+        @using (Html.BeginForm("DailyReport", "Home", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.Label("From")
+                    @Html.TextBox("From", null, new { @class = "form-control", @type = "date" })
+                </div>
+                <div class="col-md-6">
+                    @Html.Label("TO")
+                    @Html.TextBox("TO", null, new { @class = "form-control", @type = "date" })
+                </div>
+               
+
+            </div>
+            <div class="row">
+                <div class="col-md-2" style="padding-top: 4%;padding-bottom: 4%;">
+                    <button type="submit" class="btn btn-primary">View</button>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

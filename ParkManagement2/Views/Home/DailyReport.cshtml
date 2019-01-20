@@ -1,0 +1,59 @@
+﻿@model List<ParkManagement2.Models.ReportModel>
+@{
+    ViewBag.Title = "DailyReport";
+}
+
+<h2>Report</h2>
+
+<button class="btn btn-primary" onclick="Print()">Print</button>
+
+<div id="PrintDiv" style="padding-top: 2%;">
+    <table class="table table-striped" border="1" cellpadding="3">
+        <thead>
+            <tr>
+                <td>Car Id</td>
+                <td>Tag</td>
+                <td>Time from</td>
+                <td>Time to</td>
+                <td>Total Paied</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.CarId</td>
+                <td>@item.Tag</td>
+                <td>@item.From</td>
+                <td>@item.To</td>
+                <td>@item.TotalPaied</td>
+            </tr>
+            }
+            <tr>
+                <td colspan="4">Total</td>
+                <td>@Model.Sum(m => m.TotalPaied)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function Print() {
+        debugger;
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById('PrintDiv').innerHTML);
+        mywindow.document.write('</body></html>');
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+</script>
+
+

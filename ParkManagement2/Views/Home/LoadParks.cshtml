@@ -14,9 +14,20 @@
             {
                 <button class="btn btn-sm btn-warning" onclick="Out(@park.Id)">Out</button>
             }
+            else
+            {
+                <button class="btn btn-sm btn-success">In</button>
+            }
+            @if (new Business().GetFees(park.TimeIn ?? DateTime.Now, DateTime.Now, park.HotelOutTime ?? DateTime.Now, int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), park.Checked ?? false) == 0 && park.HotelOutTime != null)
+            {
+                <button class="btn btn-sm btn-success">Free</button>
+            }
+        </td>
+        <td>
+            @(new Business().GetFees(park.TimeIn ?? DateTime.Now, DateTime.Now, park.HotelOutTime ?? DateTime.Now, int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), park.Checked ?? false)) KWD
+
 
         </td>
-        <td>@(new Business().GetFees(park.TimeIn ?? DateTime.Now, DateTime.Now, park.HotelOutTime ?? DateTime.Now, int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), park.Checked ?? false)) KWD</td>
 
     </tr>
 }

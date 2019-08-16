@@ -56,8 +56,8 @@ namespace ParkManagement.Controllers
 
 
             var model = new DashboardModel();
-            var Parks = DB.Parks.ToList();
-            model.parks = Parks.Where(m => m.CarStatus == (int)ISTEnums.CarStatus.Park || m.CarStatus == (int)ISTEnums.CarStatus.AtDoor).ToList();
+            var Parks = DB.Parks.OrderByDescending(m => m.Id).ToList();
+            model.parks = Parks.Where(m => m.CarStatus == (int)ISTEnums.CarStatus.Park || m.CarStatus == (int)ISTEnums.CarStatus.AtDoor|| m.CarStatus==null).ToList();
             model.AviParks = (int.Parse(System.Configuration.ConfigurationManager.AppSettings["TotalParks"]) - Parks.Where(m => m.TimeOut == null).Count());
             model.VacParks = Parks.Where(m => m.TimeOut == null).Count();
             model.AllParks = Parks.Count();
@@ -70,7 +70,7 @@ namespace ParkManagement.Controllers
         {
             var model = new DashboardModel
             {
-                parks = DB.Parks.Where(m => m.CarStatus == (int)ISTEnums.CarStatus.Park || m.CarStatus == (int)ISTEnums.CarStatus.AtDoor).ToList()
+                parks = DB.Parks.Where(m => m.CarStatus == (int)ISTEnums.CarStatus.Park || m.CarStatus == (int)ISTEnums.CarStatus.AtDoor || m.CarStatus == null).OrderByDescending(m => m.Id).ToList()
             };
             return PartialView(model);
         }
@@ -205,7 +205,8 @@ namespace ParkManagement.Controllers
             }
             else
             {
-                var parObj = new Park() { CarId = CarId, DrawId = draw, FeesMode = int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), Tag = Tag, TimeIn = DateTime.Now };
+                //CarStatus = (int)ISTEnums.CarStatus.Park
+                var parObj = new Park() { CarId = CarId,DrawId = draw, FeesMode = int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), Tag = Tag, TimeIn = DateTime.Now };
                 DB.Parks.Add(parObj);
                 DB.SaveChanges();
                 AllPark = DB.Parks.ToList();
@@ -234,6 +235,7 @@ namespace ParkManagement.Controllers
             park.TimeOut = DateTime.Now;
             park.TempLeave = false;
             park.Fees = 0;
+            park.CarStatus = (int)ISTEnums.CarStatus.Park;
             DB.SaveChanges();
             var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             context.Clients.All.CheckLeave("Client can go for free");

@@ -6,6 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="7be18701ac724df9ab496240ca330317" Name="Diagram1">
         <EntityTypeShape EntityType="ISTParkManagementModel.Park" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ISTParkManagementModel.User" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ISTParkManagementModel.sms_template" Width="1.5" PointX="3.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

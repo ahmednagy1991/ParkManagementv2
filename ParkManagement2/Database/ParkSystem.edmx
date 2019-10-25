@@ -21,9 +21,29 @@
           <Property Name="TempLeave" Type="bit" />
           <Property Name="CarStatus" Type="int" />
           <Property Name="Fees" Type="float" />
+          <Property Name="From_sms" Type="bit" />
+          <Property Name="from_mobile_number" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sms_template">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tamplate_body" Type="nvarchar" MaxLength="150" />
+          <Property Name="template_name" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityContainer Name="ISTParkManagementModelStoreContainer">
           <EntitySet Name="Parks" EntityType="Self.Parks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sms_template" EntityType="Self.sms_template" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -45,10 +65,30 @@
           <Property Name="TempLeave" Type="Boolean" />
           <Property Name="CarStatus" Type="Int32" />
           <Property Name="Fees" Type="Double" />
+          <Property Name="From_sms" Type="Boolean" />
+          <Property Name="from_mobile_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="ISTParkManagementEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Parks" EntityType="Self.Park" />
+          <EntitySet Name="Users" EntityType="ISTParkManagementModel.User" />
+          <EntitySet Name="sms_template" EntityType="ISTParkManagementModel.sms_template" />
         </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="sms_template">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tamplate_body" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="template_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -58,6 +98,8 @@
           <EntitySetMapping Name="Parks">
             <EntityTypeMapping TypeName="ISTParkManagementModel.Park">
               <MappingFragment StoreEntitySet="Parks">
+                <ScalarProperty Name="from_mobile_number" ColumnName="from_mobile_number" />
+                <ScalarProperty Name="From_sms" ColumnName="From_sms" />
                 <ScalarProperty Name="Fees" ColumnName="Fees" />
                 <ScalarProperty Name="CarStatus" ColumnName="CarStatus" />
                 <ScalarProperty Name="TempLeave" ColumnName="TempLeave" />
@@ -70,6 +112,24 @@
                 <ScalarProperty Name="TimeIn" ColumnName="TimeIn" />
                 <ScalarProperty Name="TimeOut" ColumnName="TimeOut" />
                 <ScalarProperty Name="FeesMode" ColumnName="FeesMode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ISTParkManagementModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sms_template">
+            <EntityTypeMapping TypeName="ISTParkManagementModel.sms_template">
+              <MappingFragment StoreEntitySet="sms_template">
+                <ScalarProperty Name="template_name" ColumnName="template_name" />
+                <ScalarProperty Name="tamplate_body" ColumnName="tamplate_body" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

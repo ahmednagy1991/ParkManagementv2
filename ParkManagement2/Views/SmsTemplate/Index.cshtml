@@ -1,0 +1,49 @@
+﻿@model  ParkManagement2.Models.SmsModel
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <a href="/smstemplate/AddNew" class="btn btn-success">Add New</a>
+            </div>
+         
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>
+                            Id
+                        </td>
+                        <td>
+                            Template Name
+                        </td>
+                        <td>
+                            Template Body
+                        </td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.templates)
+                    {
+                    <tr>
+                        <td>@item.id</td>
+                        <td>@item.template_name</td>
+                        <td>@item.tamplate_body</td>
+                        <td>
+                            <a href="/smsTemplate/Edit?id=@item.id" class="btn btn-primary">Edit</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</div>
+

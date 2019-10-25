@@ -26,5 +26,7 @@ namespace ParkManagement2.Database
         }
     
         public virtual DbSet<Park> Parks { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<sms_template> sms_template { get; set; }
     }
 }

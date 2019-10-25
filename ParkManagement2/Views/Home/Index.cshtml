@@ -103,6 +103,7 @@
                         <th>Hotel Out Time</th>
                         <th>Status</th>
                         <th>Fees</th>
+                        <th>SMS</th>
                     </tr>
                 </thead>
                 <tbody id="parkList">
@@ -172,17 +173,44 @@
                 $("#TodayParks").html(TodayParks);
                 debugger;
                 //$('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-danger" onclick="AtDoor('+ParkId+')">' + Status + '</button></td> <td>' + fees + ' KWD </td>  </tr>');
-                if (fees == 0) {
-                    $('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-danger" onclick="AtDoor(' + ParkId + ')">' + Status + '</button><button class="btn btn-sm btn-success">Free</button></td> <td>' + fees + ' KWD </td >  </tr>');
-                }
-                else {
-                    $('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-danger" onclick="AtDoor(' + ParkId + ')">' + Status + '</button></td> <td>' + fees + ' KWD </td>  </tr>');
-                }
-                
+                //if (fees == 0) {
+                //    $('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-danger" onclick="AtDoor(' + ParkId + ')">' + Status + '</button><button class="btn btn-sm btn-danger">Free</button></td> <td>' + fees + ' KWD </td >  </tr>');
+                //}
+                //else {
+                    
+                //}
+                $('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-danger" onclick="AtDoor(' + ParkId + ')">' + Status + '</button></td> <td>' + fees + ' KWD </td>  </tr>');
+
                 $('#pricePanel').html('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Total Fees : </strong> ' + fees + ' KWD </div>');
 
                 ReloadParks();
             };
+
+
+            chat.client.HotelPickup = function (CarId, Tag, Time, Status, aviParks, vacParks, fees, htime, AllParks, TodayParks, ParkId) {
+                // Add the message to the page.
+                var ftime = new Date(Time).toLocaleString();
+                var fhtime = new Date(htime).toLocaleString();
+                $("#aviParks").html(aviParks);
+                $("#vacParks").html(vacParks);
+                $("#AllParks").html(AllParks);
+                $("#TodayParks").html(TodayParks);
+                debugger;
+                $('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-danger" onclick="AtDoor(' + ParkId + ')">' + Status + '</button><button class="btn btn-sm btn-danger">Free</button></td> <td>' + fees + ' KWD </td >  </tr>');
+                //$('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-danger" onclick="AtDoor('+ParkId+')">' + Status + '</button></td> <td>' + fees + ' KWD </td>  </tr>');
+                //if (fees == 0) {
+                  
+                //}
+                //else {
+                //    $('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-danger" onclick="AtDoor(' + ParkId + ')">' + Status + '</button></td> <td>' + fees + ' KWD </td>  </tr>');
+                //}
+
+                $('#pricePanel').html('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>Total Fees : </strong> ' + fees + ' KWD </div>');
+
+                ReloadParks();
+            };
+
+
             chat.client.PickupBySMS = function (CarId, Tag, Time, Status, aviParks, vacParks, fees, htime, AllParks, TodayParks, ParkId) {
                 // Add the message to the page.
                 var ftime = new Date(Time).toLocaleString();
@@ -191,7 +219,8 @@
                 $("#vacParks").html(vacParks);
                 $("#AllParks").html(AllParks);
                 $("#TodayParks").html(TodayParks);
-                $('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-danger" onclick="AtDoor(' + ParkId + ')">' + Status + '</button><button class="btn btn-sm btn-success">SMS</button></td> <td>' + fees + ' KWD </td>  </tr>');
+                debugger;
+                $('#parkList').append('<tr>  <td>' + CarId + '</td>    <td>' + Tag + '</td>    <td>' + ftime + '</td> <td>' + fhtime + '</td>  <td><button class="btn btn-sm btn-success">SMS</button><button class="btn btn-sm btn-danger" onclick="AtDoor(' + ParkId + ')">' + Status + '</button></td> <td>' + fees + ' KWD </td>  </tr>');
                 $('#carRequests').append('<div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><strong>The Car with ID ' + CarId + ' should be out within 10 mins with fees : </strong> ' + fees + ' KWD </div>');
                 ReloadParks();
             };
@@ -253,6 +282,21 @@
                         data: { ParkId: Id },
                         success: function (result) {
                             ReloadParks();
+                        },
+                        error: function (result) {
+                            alert('Error');
+                        }
+                    });
+        }
+
+        function send_sms(parkId) {
+              $.ajax({
+                        cache: false,
+                        url: '@Url.Action("SendMessage", "Home")',
+                        type: 'POST',
+                        data: { TemplateId: $("#templateId" + parkId).val(), ParkId: parkId  },
+                        success: function (result) {
+                            alert(result);
                         },
                         error: function (result) {
                             alert('Error');

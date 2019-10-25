@@ -1,4 +1,5 @@
-﻿@foreach (var park in Model.parks)
+﻿@model ParkManagement.Models.DashboardModel
+@foreach (var park in Model.parks)
 {
     <tr>
         <td>@park.CarId</td>
@@ -9,24 +10,53 @@
             @if (park.CarStatus == (int)ParkManagement.Enums.ISTEnums.CarStatus.Park)
             {
                 <button class="btn btn-sm btn-danger" onclick="AtDoor(@park.Id)">Out</button>
+                if (park.From_sms != null && park.From_sms.Value)
+                {
+                    <button class="btn btn-sm btn-success">SMS</button>
+                }
             }
             else if (park.CarStatus == (int)ParkManagement.Enums.ISTEnums.CarStatus.AtDoor)
             {
                 <button class="btn btn-sm btn-warning" onclick="Out(@park.Id)">Out</button>
+                if (park.From_sms != null && park.From_sms.Value)
+                {
+                    <button class="btn btn-sm btn-success">SMS</button>
+                }
             }
             else
             {
-                <button class="btn btn-sm btn-success">In</button>
+                @*<button class="btn btn-sm btn-success">In</button>*@
+                if (park.From_sms != null && park.From_sms.Value)
+                {
+                    <button class="btn btn-sm btn-success">SMS</button>
+                }
             }
-            @if (new Business().GetFees(park.TimeIn ?? DateTime.Now, DateTime.Now, park.HotelOutTime ?? DateTime.Now, int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), park.Checked ?? false) == 0 && park.HotelOutTime != null)
+            @*new Business().GetFees(park.TimeIn ?? DateTime.Now, DateTime.Now, park.HotelOutTime ?? DateTime.Now, int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), park.Checked ?? false) == 0 &&*@
+            @if (park.HotelOutTime != null)
             {
-                <button class="btn btn-sm btn-success">Free</button>
+                <button class="btn btn-sm btn-danger">Free</button>
+                @*if (park.From_sms != null && park.From_sms)
+                    {
+                        <button class="btn btn-sm btn-success">SMS</button>
+                    }*@
             }
         </td>
         <td>
             @(new Business().GetFees(park.TimeIn ?? DateTime.Now, DateTime.Now, park.HotelOutTime ?? DateTime.Now, int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), park.Checked ?? false)) KWD
 
 
+        </td>
+        <td>
+            @if (park.From_sms != null && !string.IsNullOrEmpty(park.From_sms.Value.ToString()))
+            {
+                <div class="row">
+                    <div class="col-md-9">@Html.DropDownList("SmsTemplate", Model.message_templates, "Select Template", new { @class = "form-control", @id = "templateId" + park.Id })</div>
+                    <div class="col-md-3"><button onclick="send_sms(@park.Id)" class="btn btn-sm btn-primary">Send</button></div>
+
+                </div>
+
+
+            }
         </td>
 
     </tr>

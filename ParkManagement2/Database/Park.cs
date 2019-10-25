@@ -26,5 +26,7 @@ namespace ParkManagement2.Database
         public Nullable<bool> TempLeave { get; set; }
         public Nullable<int> CarStatus { get; set; }
         public Nullable<double> Fees { get; set; }
+        public Nullable<bool> From_sms { get; set; }
+        public string from_mobile_number { get; set; }
     }
 }

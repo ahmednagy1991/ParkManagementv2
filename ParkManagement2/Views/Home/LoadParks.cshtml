@@ -42,7 +42,8 @@
             }
         </td>
         <td>
-            @(new Business().GetFees(park.TimeIn ?? DateTime.Now, DateTime.Now, park.HotelOutTime ?? DateTime.Now, int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), park.Checked ?? false)) KWD
+            @*@(new Business().GetFees(park.TimeIn ?? DateTime.Now, DateTime.Now, park.HotelOutTime ?? DateTime.Now, int.Parse(System.Configuration.ConfigurationManager.AppSettings["FeesMode"]), park.Checked ?? false)) KWD*@
+            @park.Fees KWD
 
 
         </td>

@@ -81,7 +81,8 @@ namespace ParkManagement.Controllers
             var model = new DashboardModel
             {
                 //|| m.CarStatus == null
-                parks = DB.Parks.Where(m => m.CarStatus == (int)ISTEnums.CarStatus.Park || m.CarStatus == (int)ISTEnums.CarStatus.AtDoor ).OrderByDescending(m => m.Id).ToList(),
+                //&&(m.HotelOutTime==null||m.TimeOut==null)
+                parks = DB.Parks.Where(m => (m.CarStatus == (int)ISTEnums.CarStatus.Park || m.CarStatus == (int)ISTEnums.CarStatus.AtDoor) ).OrderByDescending(m => m.Id).ToList(),
                 message_templates = DB.sms_template.Select(m => new SelectListItem() { Text = m.template_name, Value = m.id.ToString() }).ToList()
             };
             return PartialView(model);
@@ -123,6 +124,7 @@ namespace ParkManagement.Controllers
         [CustomAuthentication]
         public ActionResult GenerateQR()
         {
+           
             return View();
         }
 
@@ -241,14 +243,22 @@ namespace ParkManagement.Controllers
         {
 
             //var park = DB.Parks.Where(m => m.Tag == Tag && m.TimeOut == null).FirstOrDefault();
-            var park = DB.Parks.Where(m => m.Tag == Tag).FirstOrDefault();
+            var park = DB.Parks.Where(m => m.Tag == Tag && (m.HotelOutTime==null||(m.HotelOutTime==null&&m.TimeOut!=null))).FirstOrDefault();
             DB.Parks.Attach(park);
             park.HotelOutTime = DateTime.Now;
             park.Checked = true;
             park.TimeOut = DateTime.Now;
             park.TempLeave = false;
             park.Fees = 0;
-            park.CarStatus = (int)ISTEnums.CarStatus.Park;
+            if(park.CarStatus == (int)ISTEnums.CarStatus.AtDoor)
+            {
+                park.CarStatus = (int)ISTEnums.CarStatus.AtDoor;
+            }
+            else
+            {
+                park.CarStatus = (int)ISTEnums.CarStatus.Park;
+            }
+           
             DB.SaveChanges();
             var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
             context.Clients.All.CheckLeave("Client can go for free");
